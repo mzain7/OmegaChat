@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "308978304668",
+    "project_id": "omega-chat-10731",
+    "storage_bucket": "omega-chat-10731.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308978304668:android:a7dc4579fc2dbc95660f59",
+        "android_client_info": {
+          "package_name": "com.example.omega_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308978304668-tb43n9arrv7flunubstlfnp4oos5cfq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrPjy29-Qkes10T5PEA9VlqbD-uytmkVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308978304668-tb43n9arrv7flunubstlfnp4oos5cfq6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "308978304668-mj6b7kpfojldjg9u51hitjmotkph2q2d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.omegaChat.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
