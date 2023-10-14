@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:omega_chat/widgets/login.dart';
+import 'package:omega_chat/widgets/login_credential.dart';
+import 'package:omega_chat/widgets/signup.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -9,6 +11,14 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  var newUser = true;
+
+  void toggleAuthScreen() {
+    setState(() {
+      newUser = !newUser;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,12 +39,16 @@ class _AuthScreenState extends State<AuthScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset('assets/images/logo.png',width: 200,),
+              Image.asset(
+                'assets/images/logo.png',
+                width: 200,
+              ),
               const Text('OmegaChat'),
               Container(
                 alignment: Alignment.center,
-                child: const Login(),
+                child: newUser? Login(toggleAuthScreen: toggleAuthScreen) : SignUpScreen(toggleAuthScreen: toggleAuthScreen),
               ),
+              LoginCredentials(),
             ],
           ),
         ),

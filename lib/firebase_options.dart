@@ -44,40 +44,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCHREENHANPQrsHjaWLAg2p-oNabDxNXmI',
-    appId: '1:308978304668:web:2ac8902568db975d660f59',
-    messagingSenderId: '308978304668',
-    projectId: 'omega-chat-10731',
-    authDomain: 'omega-chat-10731.firebaseapp.com',
-    storageBucket: 'omega-chat-10731.appspot.com',
-    measurementId: 'G-DMRHYJ6FMY',
+    apiKey: 'AIzaSyCCbvVPQCIazLaoWDM5IgKToxwXHyHf4vQ',
+    appId: '1:86083309951:web:c8d331728ce04137400a4a',
+    messagingSenderId: '86083309951',
+    projectId: 'omega-chat-fd459',
+    authDomain: 'omega-chat-fd459.firebaseapp.com',
+    storageBucket: 'omega-chat-fd459.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDrPjy29-Qkes10T5PEA9VlqbD-uytmkVA',
-    appId: '1:308978304668:android:a7dc4579fc2dbc95660f59',
-    messagingSenderId: '308978304668',
-    projectId: 'omega-chat-10731',
-    storageBucket: 'omega-chat-10731.appspot.com',
+    apiKey: 'AIzaSyCstELTG4XRSIonOpR2xTrJgxOrlhaO76k',
+    appId: '1:86083309951:android:d266125380239a31400a4a',
+    messagingSenderId: '86083309951',
+    projectId: 'omega-chat-fd459',
+    storageBucket: 'omega-chat-fd459.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD7tpBabTAmK4PWMCb4f3StFvmcy1ykKmQ',
-    appId: '1:308978304668:ios:c7f0670dba79bf6f660f59',
-    messagingSenderId: '308978304668',
-    projectId: 'omega-chat-10731',
-    storageBucket: 'omega-chat-10731.appspot.com',
-    iosClientId: '308978304668-p93g54loh6sqirdqdk1ai50psdg8cv15.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCMpM6kDMYB2C2ckjPxH5aRao3YazCvd-4',
+    appId: '1:86083309951:ios:40c6cda1649eee46400a4a',
+    messagingSenderId: '86083309951',
+    projectId: 'omega-chat-fd459',
+    storageBucket: 'omega-chat-fd459.appspot.com',
+    iosClientId: '86083309951-fth2t1fmr48dla8l35icsq57nmsclb7i.apps.googleusercontent.com',
     iosBundleId: 'com.example.omegaChat',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyD7tpBabTAmK4PWMCb4f3StFvmcy1ykKmQ',
-    appId: '1:308978304668:ios:03335ee0bd6efd2f660f59',
-    messagingSenderId: '308978304668',
-    projectId: 'omega-chat-10731',
-    storageBucket: 'omega-chat-10731.appspot.com',
-    iosClientId: '308978304668-mj6b7kpfojldjg9u51hitjmotkph2q2d.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCMpM6kDMYB2C2ckjPxH5aRao3YazCvd-4',
+    appId: '1:86083309951:ios:70db9fa0b95424fa400a4a',
+    messagingSenderId: '86083309951',
+    projectId: 'omega-chat-fd459',
+    storageBucket: 'omega-chat-fd459.appspot.com',
+    iosClientId: '86083309951-ldhqg3taaikmiov25ns0migqpucj491a.apps.googleusercontent.com',
     iosBundleId: 'com.example.omegaChat.RunnerTests',
   );
 }

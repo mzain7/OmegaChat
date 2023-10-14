@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-<string name="app_name">Omega Chat</string>
-<string name="facebook_app_id">1234</string>
-<string name="fb_login_protocol_scheme">fb1234</string>
-<string name="facebook_client_token">56789</string>
+
+<string name="app_name">OmegaChat</string>
+<string name="facebook_app_id">725039249444469</string>
+<string name="fb_login_protocol_scheme">fb725039249444469</string>
+<string name="facebook_client_token">d49b3c9943fa45b157e48b4c208fe89c</string>
 
 
 </resources>

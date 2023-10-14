@@ -3,70 +3,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:omega_chat/screens/home_screen.dart';
+import 'package:omega_chat/widgets/login_credential.dart';
+import 'package:omega_chat/widgets/signup.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  const Login({super.key, required this.toggleAuthScreen});
 
+ final void Function() toggleAuthScreen;
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
   String _email = '';
   String _password = '';
   final _form = GlobalKey<FormState>();
-
-  Future<UserCredential?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-
-      if (googleUser == null) return null;
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      return await _auth.signInWithCredential(credential);
-    } catch (error) {
-      print(error);
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Authentication failed. Please try again. $error'),
-        ),
-      );
-      return null;
-    }
-  }
-
-  Future<UserCredential?> signInWithFacebook() async {
-    // Trigger the sign-in flow
-    try {
-      final LoginResult loginResult = await FacebookAuth.instance.login();
-
-      // Create a credential from the access token
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.token);
-
-      // Once signed in, return the UserCredential
-      return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-    } catch (error) {
-      print(error);
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Authentication failed. Please try again. $error'),
-        ),
-      );
-      return null;
-    }
-  }
 
   Future<void> signInWithEmailAndPassword() async {
     final isValid = _form.currentState!.validate();
@@ -77,8 +31,17 @@ class _LoginState extends State<Login> {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: _email, password: _password);
+      print(userCredential);
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Logined in successfully ${userCredential.user?.displayName}'),
+        ),
+      );
 
-      print("User Logged In: ${userCredential}");
+      await Future.delayed(const Duration(seconds: 5));
+      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen(),));
       // Fluttertoast.showToast(
       //     msg: "Logged In: ${userCredential.user?.displayName}");
     } catch (e) {
@@ -140,24 +103,21 @@ class _LoginState extends State<Login> {
               },
               child: const Text('Login'),
             ),
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () async {
-                UserCredential? userCredential = await signInWithGoogle();
-                if (userCredential != null) {
-                  print(
-                      "Google User Logged In: ${userCredential.user?.displayName}");
-                  // Fluttertoast.showToast(msg: "Google Logged In: ${userCredential.user?.displayName}");
-                }
-              },
-              child: const Text('Sign in with Google'),
+            const SizedBox(height: 8.0),
+            Row(
+              children: [
+                const Text('Don\'t have an account?'),
+                GestureDetector(
+                  onTap: () {
+                    widget.toggleAuthScreen!();
+                  },
+                  child: const Text(
+                    'Sign Up',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20.0),
-            ElevatedButton.icon(
-              onPressed: signInWithFacebook,
-              icon: const Icon(Icons.facebook),
-              label: const Text('Login with Facebook'),
-            )
           ],
         ),
       ),
