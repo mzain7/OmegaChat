@@ -6,9 +6,11 @@ import 'package:omega_chat/firebase_options.dart';
 import 'package:omega_chat/screens/auth_screen.dart';
 import 'package:omega_chat/screens/home_screen.dart';
 import 'package:omega_chat/screens/tab_screen.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -24,7 +26,8 @@ class MyApp extends StatelessWidget {
       title: 'Omega Chat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 48, 125, 141)),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 48, 125, 141)),
         useMaterial3: true,
       ),
       home: StreamBuilder(

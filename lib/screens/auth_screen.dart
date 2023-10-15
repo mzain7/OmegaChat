@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:omega_chat/widgets/login.dart';
 import 'package:omega_chat/widgets/login_credential.dart';
 import 'package:omega_chat/widgets/signup.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -22,7 +21,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    timeDilation = 2.5;
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
