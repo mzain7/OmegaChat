@@ -1,8 +1,15 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:omega_chat/screens/home_screen.dart';
-import 'package:omega_chat/widgets/login_credential.dart';
+import 'package:omega_chat/screens/new_user.dart';
+import 'package:omega_chat/utils/firebase.dart';
+import 'package:omega_chat/widgets/auth/login_credential.dart';
+
+final _auth = FirebaseAuth.instance;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key, required this.toggleAuthScreen});
@@ -17,35 +24,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+
+
+  var userExist = false;
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
+        print('start');
+        userExist =
+            (await _auth.fetchSignInMethodsForEmail(_emailController.text))
+                .isNotEmpty;
+        print(userExist);
+        if (userExist) {
+          throw Exception('User already exists');
+        }
+        Map<String, String> userDetails = await Navigator.of(context).push(
+          createRoute(null, null),
         );
+        if (userDetails.isEmpty) {
+          return;
+        }
+        print('Back to Sign up Screen');
+        print(userDetails);
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: _emailController.text,
+                password: _passwordController.text);
         print(userCredential.user);
-        userCredential.user?.sendEmailVerification();
+        // userCredential.user?.sendEmailVerification();
 
-        await userCredential.user?.updateDisplayName(_usernameController.text);
-        await userCredential.user?.updatePhotoURL(
-            'https://image.shutterstock.com/image-photo/portrait-young-smiling-woman-looking-260nw-1865153395.jpg');
+        final photoUrl = await uploadImageToFirebase(userDetails['photoUrl']!);
+        print('Url of PHOTO IS   NCOECECNIWCN :  ::::::::::::::' + photoUrl);
+        await userCredential.user?.updateDisplayName(userDetails['name']!);
+        await userCredential.user?.updatePhotoURL(photoUrl);
+
         print(userCredential.user);
         // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen(),));
 
         // Store additional information (gender, age) in Firestore
-        await FirebaseFirestore.instance
+        FirebaseFirestore.instance
             .collection('users')
             .doc(userCredential.user!.uid)
             .set({
           'email': _emailController.text,
-          'username': _usernameController.text,
-          'gender': null, // Add user's gender here
-          'age': null, // Add user's age here
+          'name': _usernameController.text,
+          'photoUrl': userDetails['photoUrl'], // Add user's photoUrl here
+          'gender': userDetails['gender'], // Add user's gender here
+          'age': userDetails['dob'], // Add user's age here
         });
 
         // Navigate to the next screen or perform desired action
@@ -115,3 +144,4 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
+
