@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:omega_chat/firebase_options.dart';
 import 'package:omega_chat/screens/auth_screen.dart';
 import 'package:omega_chat/screens/home_screen.dart';
+import 'package:omega_chat/screens/tab_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
             }
 
             if (snapshot.hasData) {
-              return const HomeScreen();
+              return const TabScreen();
             }
 
             return const AuthScreen();

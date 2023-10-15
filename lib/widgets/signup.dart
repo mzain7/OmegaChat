@@ -17,20 +17,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen(),));
+        print(userCredential.user);
+        userCredential.user?.sendEmailVerification();
 
+        await userCredential.user?.updateDisplayName(_usernameController.text);
+        await userCredential.user?.updatePhotoURL(
+            'https://image.shutterstock.com/image-photo/portrait-young-smiling-woman-looking-260nw-1865153395.jpg');
+        print(userCredential.user);
+        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen(),));
 
         // Store additional information (gender, age) in Firestore
-        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
           'email': _emailController.text,
           'username': _usernameController.text,
           'gender': null, // Add user's gender here
@@ -54,7 +65,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
-              if (value!.isEmpty || !RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+').hasMatch(value)) {
+              if (value!.isEmpty ||
+                  !RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
+                      .hasMatch(value)) {
                 return 'Please enter a valid email address';
               }
               return null;

@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:omega_chat/screens/home_screen.dart';
-import 'package:omega_chat/widgets/login_credential.dart';
-import 'package:omega_chat/widgets/signup.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.toggleAuthScreen});

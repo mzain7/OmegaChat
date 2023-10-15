@@ -43,6 +43,9 @@ dependencies:
   cloud_firestore: ^4.9.3
   agora_rtc_engine: ^6.2.3
   permission_handler: ^11.0.1
+  firebase_auth_web: ^5.8.2
+  bottom_bar: ^2.0.3
+  flutter_native_splash: ^2.3.3
 
 dev_dependencies:
   flutter_test:

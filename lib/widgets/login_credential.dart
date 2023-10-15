@@ -23,7 +23,11 @@ class LoginCredentials extends StatelessWidget {
         idToken: googleAuth.idToken,
       );
 
-      return await _auth.signInWithCredential(credential);
+      final userCredential = await _auth.signInWithCredential(credential);
+      userCredential.user?.updateDisplayName(googleUser.displayName);
+      userCredential.user?.updatePhotoURL(googleUser.photoUrl);
+      print(userCredential.user);
+      return userCredential;
       // UserCredential? userCredential =
       //     await _auth.signInWithCredential(credential);
       // bool isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
@@ -60,7 +64,12 @@ class LoginCredentials extends StatelessWidget {
           FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
       // Once signed in, return the UserCredential
-      return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      var userCredential = await
+          FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      userCredential.user?.updateDisplayName(user['name']);
+      userCredential.user?.updatePhotoURL(user['picture']['data']['url']);
+      print(userCredential.user);
+      return userCredential;
     } catch (error) {
       print(error);
       // ScaffoldMessenger.of(context).clearSnackBars();
