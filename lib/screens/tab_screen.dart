@@ -2,6 +2,8 @@ import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:omega_chat/screens/auth_screen.dart';
 import 'package:omega_chat/screens/home_screen.dart';
+import 'package:omega_chat/screens/new_user.dart';
+import 'package:omega_chat/screens/setting_screen.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({Key? key}) : super(key: key);
@@ -35,9 +37,11 @@ class _TabScreenState extends State<TabScreen> {
       ),
       body: PageView(
         controller: _pageController,
-        children: const [
-          HomeScreen(),
-          AuthScreen(),
+        children: [
+          const HomeScreen(),
+          const AuthScreen(),
+          NewUser(),
+          const SettingScreen(),
         ],
         onPageChanged: (index) {
           setState(() {
@@ -45,28 +49,21 @@ class _TabScreenState extends State<TabScreen> {
           });
         },
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   onTap: _selectPage,
-      //   currentIndex: _selectedPageIndex,
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.set_meal),
-      //       label: 'Categories',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.star),
-      //       label: 'Favorites',
-      //     ),
-      //   ],
-      // ),
       bottomNavigationBar: BottomBar(
         selectedIndex: _selectedPageIndex,
         onTap: (int index) {
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.ease,
-          );
+          if (index == _selectedPageIndex + 1 ||
+              index == _selectedPageIndex - 1) {
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.ease,
+            );
+          } else {
+            _pageController.jumpToPage(index);
+          }
+
+          print('Index page is $index');
           setState(() => _selectedPageIndex = index);
         },
         items: <BottomBarItem>[

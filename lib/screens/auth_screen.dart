@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:omega_chat/widgets/login.dart';
-import 'package:omega_chat/widgets/login_credential.dart';
-import 'package:omega_chat/widgets/signup.dart';
+import 'package:omega_chat/widgets/auth/login.dart';
+import 'package:omega_chat/widgets/auth/login_credential.dart';
+import 'package:omega_chat/widgets/auth/signup.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
