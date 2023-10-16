@@ -22,28 +22,26 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
+  // final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-
-
-  var userExist = false;
+  // var userExist = false;
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        print('start');
-        userExist =
-            (await _auth.fetchSignInMethodsForEmail(_emailController.text))
-                .isNotEmpty;
-        print(userExist);
-        if (userExist) {
-          throw Exception('User already exists');
-        }
+        // print('start');
+        // userExist =
+        //     (await _auth.fetchSignInMethodsForEmail(_emailController.text))
+        //         .isNotEmpty;
+        // print(userExist);
+        // if (userExist) {
+        //   throw Exception('User already exists');
+        // }
         Map<String, String> userDetails = await Navigator.of(context).push(
-          createRoute(null, null),
+          createRoute(true),
         );
         if (userDetails.isEmpty) {
           return;
@@ -71,10 +69,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             .doc(userCredential.user!.uid)
             .set({
           'email': _emailController.text,
-          'name': _usernameController.text,
-          'photoUrl': userDetails['photoUrl'], // Add user's photoUrl here
-          'gender': userDetails['gender'], // Add user's gender here
-          'age': userDetails['dob'], // Add user's age here
+          'name': userDetails['name'],
+          'photoUrl': userDetails['photoUrl'],
+          'gender': userDetails['gender'],
+          'dob': userDetails['dob'],
+          'country': userDetails['country'],
         });
 
         // Navigate to the next screen or perform desired action
@@ -103,16 +102,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             },
             decoration: const InputDecoration(labelText: 'Email'),
           ),
-          TextFormField(
-            controller: _usernameController,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter a username';
-              }
-              return null;
-            },
-            decoration: const InputDecoration(labelText: 'Username'),
-          ),
+          // TextFormField(
+          //   controller: _usernameController,
+          //   validator: (value) {
+          //     if (value!.isEmpty) {
+          //       return 'Please enter a username';
+          //     }
+          //     return null;
+          //   },
+          //   decoration: const InputDecoration(labelText: 'Username'),
+          // ),
           TextFormField(
             controller: _passwordController,
             obscureText: true,
@@ -144,4 +143,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
-
