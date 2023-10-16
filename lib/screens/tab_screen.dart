@@ -1,10 +1,7 @@
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:omega_chat/screens/auth_screen.dart';
-import 'package:omega_chat/screens/home_screen.dart';
-import 'package:omega_chat/screens/new_user.dart';
+
 import 'package:omega_chat/screens/setting_screen.dart';
-import 'package:omega_chat/screens/acc.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({Key? key}) : super(key: key);

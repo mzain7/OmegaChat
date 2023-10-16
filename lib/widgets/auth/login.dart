@@ -120,7 +120,7 @@ class _LoginState extends State<Login> {
                   onTap: () {
                     showDialog(
                       context: context,
-                      builder: (context) => PasswordReset(email: _emailController.text ?? ''),
+                      builder: (context) => PasswordReset(email: _emailController.text),
                     );
                   },
                   child: const Text(
