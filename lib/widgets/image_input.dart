@@ -102,13 +102,13 @@ class _ImageInputState extends State<ImageInput> {
                   decoration: const ShapeDecoration(
                     shape: CircleBorder(),
                   ),
-                  width: 150,
-                  height: 150,
+                  width: 120,
+                  height: 120,
                   child: image != null
                       ? Image.file(
                           File(image!.path),
                           fit: BoxFit.cover,
-                          width: 200,
+                          width: 120,
                         )
                       : Image.network(
                           widget.imageUrl,

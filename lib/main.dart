@@ -21,11 +21,35 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Omega Chat',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
+      darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 48, 125, 141)),
         useMaterial3: true,
+        textTheme: const TextTheme().apply(
+          bodyColor: const Color.fromARGB(255, 227, 227, 227),
+          displayColor: const Color.fromARGB(255, 227, 227, 227),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          ),
+          
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          ),
+        ),
       ),
+      themeMode: ThemeMode.dark,
       home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, snapshot) {

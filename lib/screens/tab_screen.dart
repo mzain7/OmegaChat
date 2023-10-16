@@ -40,10 +40,9 @@ class _TabScreenState extends State<TabScreen> {
         controller: _pageController,
         children: [
           const HomeScreen(),
-          const AuthScreen(),
           const NewUser(newUser: true,),
            SettingScreen(),
-          AccordionPage(),
+          const AccordionPage(),
         ],
         onPageChanged: (index) {
           setState(() {
@@ -87,11 +86,6 @@ class _TabScreenState extends State<TabScreen> {
           const BottomBarItem(
             icon: Icon(Icons.settings),
             title: Text('Settings'),
-            activeColor: Colors.orange,
-          ),
-          const BottomBarItem(
-            icon: Icon(Icons.settings),
-            title: Text('ACCodia'),
             activeColor: Colors.orange,
           ),
         ],

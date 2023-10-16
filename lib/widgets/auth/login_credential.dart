@@ -119,7 +119,11 @@ class _LoginCredentialsState extends State<LoginCredentials> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ElevatedButton(
+        ElevatedButton.icon(
+          icon: Image.asset(
+            'assets/images/google_logo.png',
+            width: 25,
+          ),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
@@ -128,11 +132,11 @@ class _LoginCredentialsState extends State<LoginCredentials> {
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           ),
           onPressed: signInWithGoogle,
-          child: const Text(
+          label: const Text(
             'Sign in with Google',
           ),
         ),
-        const SizedBox(height: 8.0),
+        const SizedBox(height: 5.0),
         ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -143,7 +147,7 @@ class _LoginCredentialsState extends State<LoginCredentials> {
           ),
           onPressed: signInWithFacebook,
           icon: const Icon(Icons.facebook),
-          label: const Text('Login with Facebook'),
+          label: const Text('Sign in with Facebook'),
         ),
       ],
     );

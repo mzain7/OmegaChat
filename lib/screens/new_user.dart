@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:omega_chat/utils/firebase.dart';
+import 'package:omega_chat/utils/styles.dart';
 import 'package:omega_chat/widgets/image_input.dart';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:http/http.dart' as http;
@@ -129,55 +130,77 @@ class _NewUserState extends State<NewUser> {
     _genderController.text = userDetails?['gender'] ?? '';
     _countryController.text = userDetails?['country'] ?? '';
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        toolbarHeight: 0,
+      ),
       body: Container(
         padding: const EdgeInsets.all(10),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Form(
-              key: _form,
-              child: TextFormField(
-                initialValue: name,
-                decoration: const InputDecoration(labelText: 'Name'),
-                autocorrect: false,
-                textCapitalization: TextCapitalization.none,
-                validator: (value) {
-                  if (value == null || value.toString().trim().isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  if (value.length < 4) {
-                    return 'Please enter your full name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  name = value!;
-                },
-              ),
-            ),
-            ImageInput(setImage: setImage, imageUrl: photoUrl),
-            ElevatedButton(onPressed: _submit, child: const Text('Next')),
-            ElevatedButton.icon(
-              onPressed: _presentDatePicker,
-              icon: const Icon(
-                Icons.calendar_month,
-              ),
-              label: Text(_selectedDate == null
-                      ? 'Date of Birth: --/--/----'
-                      : 'Date of Birth: ${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
-                  // : formatter.format(_selectedDate!),
+            Row(
+              children: [
+                Expanded(
+                  child: Form(
+                    key: _form,
+                    child: TextFormField(
+                      initialValue: name,
+                      decoration: textFieldStyle.copyWith(
+                        labelText: 'Name',
+                      ),
+                      autocorrect: false,
+                      textCapitalization: TextCapitalization.none,
+                      validator: (value) {
+                        if (value == null || value.toString().trim().isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        if (value.length < 4) {
+                          return 'Please enter your full name';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        name = value!;
+                      },
+                    ),
                   ),
+                ),
+                ImageInput(setImage: setImage, imageUrl: photoUrl),
+              ],
             ),
-            CustomDropdown(
-              hintText: 'Select a Gender',
-              items: const ['Male', 'Female', 'Shhh! Asi batay bati nahi jati'],
-              controller: _genderController,
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: _presentDatePicker,
+                  icon: const Icon(
+                    Icons.calendar_month,
+                  ),
+                  label: Text(_selectedDate == null
+                          ? 'Date of Birth: --/--/----'
+                          : 'Date of Birth: ${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
+                      // : formatter.format(_selectedDate!),
+                      ),
+                ),
+                Expanded(
+                  child: CustomDropdown(
+                    hintText: 'Select a Gender',
+                    items: const [
+                      'Male',
+                      'Female',
+                      'Shhh! Asi batay bati nahi jati'
+                    ],
+                    controller: _genderController,
+                  ),
+                ),
+              ],
             ),
             CustomDropdown.search(
               hintText: 'Select your Country',
               items: countries ?? ['Loading...'],
               controller: _countryController,
             ),
+            ElevatedButton(onPressed: _submit, child: const Text('Next')),
           ],
         ),
       ),

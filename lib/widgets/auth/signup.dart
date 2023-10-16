@@ -1,13 +1,9 @@
-import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:omega_chat/screens/home_screen.dart';
 import 'package:omega_chat/screens/new_user.dart';
 import 'package:omega_chat/utils/firebase.dart';
-import 'package:omega_chat/widgets/auth/login_credential.dart';
+import 'package:omega_chat/utils/styles.dart';
 
 final _auth = FirebaseAuth.instance;
 
@@ -22,48 +18,28 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
-  // final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
-  // var userExist = false;
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // print('start');
-        // userExist =
-        //     (await _auth.fetchSignInMethodsForEmail(_emailController.text))
-        //         .isNotEmpty;
-        // print(userExist);
-        // if (userExist) {
-        //   throw Exception('User already exists');
-        // }
         Map<String, String> userDetails = await Navigator.of(context).push(
           createRoute(true),
         );
         if (userDetails.isEmpty) {
           return;
         }
-        print('Back to Sign up Screen');
-        print(userDetails);
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
                 email: _emailController.text,
                 password: _passwordController.text);
-        print(userCredential.user);
-        // userCredential.user?.sendEmailVerification();
-
         final photoUrl = await uploadImageToFirebase(userDetails['photoUrl']!);
-        print('Url of PHOTO IS   NCOECECNIWCN :  ::::::::::::::' + photoUrl);
         await userCredential.user?.updateDisplayName(userDetails['name']!);
         await userCredential.user?.updatePhotoURL(photoUrl);
-
-        print(userCredential.user);
-        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen(),));
-
-        // Store additional information (gender, age) in Firestore
         FirebaseFirestore.instance
             .collection('users')
             .doc(userCredential.user!.uid)
@@ -75,68 +51,131 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'dob': userDetails['dob'],
           'country': userDetails['country'],
         });
-
-        // Navigate to the next screen or perform desired action
       } catch (e) {
         print('Error: $e');
       }
+    } else {
+      setState(() {
+        _autovalidateMode = AutovalidateMode.always;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.0),
+        color: const Color.fromARGB(117, 46, 46, 48),
+      ),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextFormField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            validator: (value) {
-              if (value!.isEmpty ||
-                  !RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
-                      .hasMatch(value)) {
-                return 'Please enter a valid email address';
-              }
-              return null;
-            },
-            decoration: const InputDecoration(labelText: 'Email'),
+          Text(
+            'Register',
+            textAlign: TextAlign.start,
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          // TextFormField(
-          //   controller: _usernameController,
-          //   validator: (value) {
-          //     if (value!.isEmpty) {
-          //       return 'Please enter a username';
-          //     }
-          //     return null;
-          //   },
-          //   decoration: const InputDecoration(labelText: 'Username'),
-          // ),
-          TextFormField(
-            controller: _passwordController,
-            obscureText: true,
-            validator: (value) {
-              if (value!.isEmpty || value.length < 6) {
-                return 'Password must be at least 6 characters long';
-              }
-              return null;
-            },
-            decoration: const InputDecoration(labelText: 'Password'),
-          ),
-          TextFormField(
-            controller: _confirmPasswordController,
-            obscureText: true,
-            validator: (value) {
-              if (value != _passwordController.text) {
-                return 'Passwords do not match';
-              }
-              return null;
-            },
-            decoration: const InputDecoration(labelText: 'Confirm Password'),
-          ),
-          ElevatedButton(
-            onPressed: _submitForm,
-            child: const Text('Sign Up'),
+          const SizedBox(height: 10.0),
+          Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  autovalidateMode: _autovalidateMode,
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value!.isEmpty ||
+                        !RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
+                            .hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
+                  decoration: textFieldStyle.copyWith(
+                    labelText: 'Email',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                  autovalidateMode: _autovalidateMode,
+                  controller: _passwordController,
+                  obscureText: true,
+                  validator: (value) {
+                    if (value!.isEmpty || value.length < 6) {
+                      return 'Password must be at least 6 characters long';
+                    }
+                    return null;
+                  },
+                  decoration: textFieldStyle.copyWith(
+                    labelText: 'Password',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                  autovalidateMode: _autovalidateMode,
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                  validator: (value) {
+                    if (value.toString().trim().isEmpty ||
+                        value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
+                  decoration: textFieldStyle.copyWith(
+                    labelText: 'Confirm Password',
+                  ),
+                ),
+                const SizedBox(height: 15.0),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 244, 161, 31),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25.0, vertical: 12.0),
+                      textStyle: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: _submitForm,
+                    child: const Text('Sign Up'),
+                  ),
+                ),
+                const SizedBox(height: 15.0),
+                Align(
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Already have an account?',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          widget.toggleAuthScreen();
+                        },
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

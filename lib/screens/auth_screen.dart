@@ -22,19 +22,28 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: const Color.fromARGB(255, 2, 0, 16),
+      ),
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 48, 125, 141),
-              Color.fromARGB(255, 47, 54, 73),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg0.jpg'),
+            fit: BoxFit.cover,
           ),
+          // gradient: LinearGradient(
+          //   colors: [
+          //     Color.fromARGB(255, 48, 125, 141),
+          //     Color.fromARGB(255, 47, 54, 73),
+          //   ],
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          // ),
         ),
         alignment: Alignment.center,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(25),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -43,15 +52,19 @@ class _AuthScreenState extends State<AuthScreen> {
                 tag: 'logo',
                 child: Image.asset(
                   'assets/images/logo.png',
-                  width: 200,
+                  width: 150,
                 ),
+                
               ),
-              const Text('OmegaChat'),
+              const SizedBox(height: 2),
               Container(
                 alignment: Alignment.center,
-                child: newUser? Login(toggleAuthScreen: toggleAuthScreen) : SignUpScreen(toggleAuthScreen: toggleAuthScreen),
+                child: newUser
+                    ? Login(toggleAuthScreen: toggleAuthScreen)
+                    : SignUpScreen(toggleAuthScreen: toggleAuthScreen),
               ),
-              LoginCredentials(),
+              const SizedBox(height: 8),
+              const LoginCredentials(),
             ],
           ),
         ),
