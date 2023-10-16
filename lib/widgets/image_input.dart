@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
-  const ImageInput({super.key, required this.setImage});
+  const ImageInput({
+    super.key,
+    required this.setImage,
+    required this.imageUrl,
+  });
 
   final void Function(XFile img) setImage;
+  final String imageUrl;
   @override
   State<ImageInput> createState() => _ImageInputState();
 }
@@ -101,13 +106,12 @@ class _ImageInputState extends State<ImageInput> {
                   height: 150,
                   child: image != null
                       ? Image.file(
-                          //to show image, you type like this.
                           File(image!.path),
                           fit: BoxFit.cover,
                           width: 200,
                         )
                       : Image.network(
-                          "https://firebasestorage.googleapis.com/v0/b/omega-chat-fd459.appspot.com/o/user_pictures%2Fuser%20logo.jpg?alt=media&token=7bc4bcff-214f-4651-9110-02e70ae84722&_gl=1*1ha5zh0*_ga*OTg3NDkyMTQxLjE2OTY2ODQ4NjY.*_ga_CW55HF8NVT*MTY5NzM2MDU4OS4yOS4xLjE2OTczNjA3MTAuMS4wLjA.",
+                          widget.imageUrl,
                           width: 200,
                           fit: BoxFit.cover,
                         ),

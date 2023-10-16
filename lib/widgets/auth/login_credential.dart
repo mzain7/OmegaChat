@@ -15,10 +15,10 @@ class LoginCredentials extends StatefulWidget {
 
 class _LoginCredentialsState extends State<LoginCredentials> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  var userExist = false;
+  // var userExist = false;
+  // var password = 'cnwoincrvboncwcbc4r4.;,,l/32';
 
   Future<UserCredential?> signInWithGoogle() async {
     try {
@@ -34,30 +34,34 @@ class _LoginCredentialsState extends State<LoginCredentials> {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      userExist =
-          (await _auth.fetchSignInMethodsForEmail(googleUser.email)).isNotEmpty;
-      print(userExist);
-      Map<String, String> userDetails = {};
-      if (!userExist) {
-        userDetails = await Navigator.of(context).push(
-          createRoute(googleUser.displayName, googleUser.photoUrl!),
-        );
-        print(userDetails);
-      }
+      print(credential);
+      // var list = await _auth.fetchSignInMethodsForEmail('mzain.akhtar3@gmail.com');
+      // print(list.length);
+      // userExist =
+      //     (await _auth.fetchSignInMethodsForEmail(googleUser.email)).isNotEmpty;
+      // print(userExist);
+      // Map<String, String> userDetails = {};
+      // if (!userExist) {
+      //   userDetails = await Navigator.of(context).push(
+      //     createRoute(googleUser.displayName, googleUser.photoUrl),
+      //   );
+      //   print(userDetails);
+      // }
 
       final userCredential = await _auth.signInWithCredential(credential);
       print('Fresh User: ${userCredential.user}');
-      await userCredential.user
-          ?.updateDisplayName(userDetails['name'] ?? googleUser.displayName);
-      if (userDetails['photoUrl'] != null) {
-        final photoUrl = await uploadImageToFirebase(userDetails['photoUrl']!);
-        await userCredential.user
-            ?.updatePhotoURL(userDetails['photoUrl'] ?? googleUser.photoUrl!);
-      } else {
-        await userCredential.user?.updatePhotoURL(googleUser.photoUrl!);
-      }
-      print(userCredential.user);
+      // await userCredential.user
+      //     ?.updateDisplayName(userDetails['name'] ?? googleUser.displayName);
+      // if (userDetails['photoUrl'] != null) {
+      //   final photoUrl = await uploadImageToFirebase(userDetails['photoUrl']!);
+      //   await userCredential.user
+      //       ?.updatePhotoURL(photoUrl ?? googleUser.photoUrl!);
+      // } else {
+      //   await userCredential.user?.updatePhotoURL(googleUser.photoUrl!);
+      // }
+      // print(userCredential.user);
       return userCredential;
+
       // UserCredential? userCredential =
       //     await _auth.signInWithCredential(credential);
       // bool isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
@@ -82,23 +86,21 @@ class _LoginCredentialsState extends State<LoginCredentials> {
   }
 
   Future<UserCredential?> signInWithFacebook() async {
-    // Trigger the sign-in flow
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login(
         permissions: ['public_profile', 'email'],
       );
       final user = await FacebookAuth.instance.getUserData();
       print(user);
-      // Create a credential from the access token
       final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
-      // Once signed in, return the UserCredential
       var userCredential = await FirebaseAuth.instance
           .signInWithCredential(facebookAuthCredential);
-      userCredential.user?.updateDisplayName(user['name']);
-      userCredential.user?.updatePhotoURL(user['picture']['data']['url']);
-      print(userCredential.user);
+      print('Fresh User: ${userCredential.user}');
+      // userCredential.user?.updateDisplayName(user['name']);
+      // userCredential.user?.updatePhotoURL(user['picture']['data']['url']);
+      // print(userCredential.user);
       return userCredential;
     } catch (error) {
       print(error);
@@ -125,16 +127,7 @@ class _LoginCredentialsState extends State<LoginCredentials> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           ),
-          onPressed: () async {
-            UserCredential? userCredential = await signInWithGoogle();
-            if (userCredential != null) {
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen(),));
-
-              print(
-                  "Google User Logged In: ${userCredential.user?.displayName}");
-              // Fluttertoast.showToast(msg: "Google Logged In: ${userCredential.user?.displayName}");
-            }
-          },
+          onPressed: signInWithGoogle,
           child: const Text(
             'Sign in with Google',
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:omega_chat/widgets/auth/password_reset.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.toggleAuthScreen});
@@ -90,6 +91,15 @@ class _LoginState extends State<Login> {
                 _password = value!;
               },
             ),
+            GestureDetector(
+              onTap: () {
+                showDialog(context: context, builder: (context) => const PasswordReset(),);
+              },
+              child: const Text(
+                      'Sign Up',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+            ),
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
@@ -103,7 +113,7 @@ class _LoginState extends State<Login> {
                 const Text('Don\'t have an account?'),
                 GestureDetector(
                   onTap: () {
-                    widget.toggleAuthScreen!();
+                    widget.toggleAuthScreen();
                   },
                   child: const Text(
                     'Sign Up',

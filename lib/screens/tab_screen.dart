@@ -4,6 +4,7 @@ import 'package:omega_chat/screens/auth_screen.dart';
 import 'package:omega_chat/screens/home_screen.dart';
 import 'package:omega_chat/screens/new_user.dart';
 import 'package:omega_chat/screens/setting_screen.dart';
+import 'package:omega_chat/screens/acc.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({Key? key}) : super(key: key);
@@ -40,8 +41,9 @@ class _TabScreenState extends State<TabScreen> {
         children: [
           const HomeScreen(),
           const AuthScreen(),
-          NewUser(),
-          const SettingScreen(),
+          const NewUser(newUser: true,),
+           SettingScreen(),
+          AccordionPage(),
         ],
         onPageChanged: (index) {
           setState(() {
@@ -85,6 +87,11 @@ class _TabScreenState extends State<TabScreen> {
           const BottomBarItem(
             icon: Icon(Icons.settings),
             title: Text('Settings'),
+            activeColor: Colors.orange,
+          ),
+          const BottomBarItem(
+            icon: Icon(Icons.settings),
+            title: Text('ACCodia'),
             activeColor: Colors.orange,
           ),
         ],

@@ -6,7 +6,7 @@ import 'package:omega_chat/screens/auth_screen.dart';
 import 'package:omega_chat/screens/tab_screen.dart';
 
 Future<void> main() async {
-WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -15,7 +15,7 @@ WidgetsFlutterBinding.ensureInitialized();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  // final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

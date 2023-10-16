@@ -1,21 +1,20 @@
+import 'dart:ffi';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:omega_chat/utils/firebase.dart';
 import 'package:omega_chat/widgets/image_input.dart';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class NewUser extends StatefulWidget {
-  NewUser({super.key, name, photoUrl})
-      : name = name ?? "",
-        photoUrl = photoUrl ??
-            "https://firebasestorage.googleapis.com/v0/b/omega-chat-fd459.appspot.com/o/user_pictures%2Fuser%20logo.jpg?alt=media&token=7bc4bcff-214f-4651-9110-02e70ae84722&_gl=1*1ha5zh0*_ga*OTg3NDkyMTQxLjE2OTY2ODQ4NjY.*_ga_CW55HF8NVT*MTY5NzM2MDU4OS4yOS4xLjE2OTczNjA3MTAuMS4wLjA.";
+  const NewUser({super.key, required this.newUser});
 
-  String name;
-  String photoUrl;
+  final bool newUser;
 
   @override
   State<NewUser> createState() => _NewUserState();
@@ -28,15 +27,34 @@ class _NewUserState extends State<NewUser> {
   final _countryController = TextEditingController();
   List<String>? countries;
   XFile? image;
+  String name = '';
+  String photoUrl = '';
+
+  Map<String, dynamic>? userDetails;
 
   @override
   void initState() {
+    name =
+        widget.newUser ? '' : FirebaseAuth.instance.currentUser!.displayName!;
+    photoUrl = widget.newUser
+        ? 'https://firebasestorage.googleapis.com/v0/b/omega-chat-fd459.appspot.com/o/user_pictures%2Fuser%20logo.jpg?alt=media&token=7bc4bcff-214f-4651-9110-02e70ae84722&_gl=1*1ha5zh0*_ga*OTg3NDkyMTQxLjE2OTY2ODQ4NjY.*_ga_CW55HF8NVT*MTY5NzM2MDU4OS4yOS4xLjE2OTczNjA3MTAuMS4wLjA.'
+        : FirebaseAuth.instance.currentUser!.photoURL!;
     super.initState();
     fetchCountries().then((value) {
       setState(() {
         countries = value;
       });
     });
+    if (!widget.newUser) {
+      getUserDetails(FirebaseAuth.instance.currentUser!.uid).then((value) {
+        setState(() {
+          userDetails = value;
+          print(value);
+          _selectedDate =
+              value?['dob'] != null ? DateTime.parse(value?['dob']) : null;
+        });
+      });
+    }
   }
 
   @override
@@ -57,7 +75,9 @@ class _NewUserState extends State<NewUser> {
 
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: now,
+      initialDate: userDetails?['dob'] == null
+          ? DateTime(now.year - 20, now.month, now.day)
+          : DateTime.parse(userDetails?['dob']!),
       firstDate: firstDate,
       lastDate: now,
     );
@@ -85,18 +105,18 @@ class _NewUserState extends State<NewUser> {
     _form.currentState!.save();
     if (image != null) {
       // widget.photoUrl = await uploadImageToFirebase(image!);
-      widget.photoUrl = image!.path;
+      photoUrl = image!.path;
     }
     print({
-      "name": widget.name,
-      "photoUrl": widget.photoUrl,
+      "name": name,
+      "photoUrl": photoUrl,
       "gender": _genderController.text,
       "country": _countryController.text,
       "dob": _selectedDate.toString(),
     });
     Navigator.of(context).pop({
-      "name": widget.name,
-      "photoUrl": widget.photoUrl,
+      "name": name,
+      "photoUrl": photoUrl,
       "gender": _genderController.text,
       "country": _countryController.text,
       "dob": _selectedDate.toString(),
@@ -106,7 +126,8 @@ class _NewUserState extends State<NewUser> {
   @override
   Widget build(BuildContext context) {
     print("New User Screen");
-
+    _genderController.text = userDetails?['gender'] ?? '';
+    _countryController.text = userDetails?['country'] ?? '';
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -116,7 +137,7 @@ class _NewUserState extends State<NewUser> {
             Form(
               key: _form,
               child: TextFormField(
-                initialValue: widget.name,
+                initialValue: name,
                 decoration: const InputDecoration(labelText: 'Name'),
                 autocorrect: false,
                 textCapitalization: TextCapitalization.none,
@@ -130,11 +151,11 @@ class _NewUserState extends State<NewUser> {
                   return null;
                 },
                 onSaved: (value) {
-                  widget.name = value!;
+                  name = value!;
                 },
               ),
             ),
-            ImageInput(setImage: setImage),
+            ImageInput(setImage: setImage, imageUrl: photoUrl),
             ElevatedButton(onPressed: _submit, child: const Text('Next')),
             ElevatedButton.icon(
               onPressed: _presentDatePicker,
@@ -164,11 +185,10 @@ class _NewUserState extends State<NewUser> {
   }
 }
 
-Route createRoute(String? name, String? photoUrl) {
+Route createRoute(bool isNewUser) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => NewUser(
-      name: name,
-      photoUrl: photoUrl,
+      newUser: isNewUser,
     ),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
