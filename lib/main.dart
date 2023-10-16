@@ -4,13 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:omega_chat/firebase_options.dart';
 import 'package:omega_chat/screens/auth_screen.dart';
 import 'package:omega_chat/screens/tab_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  requestPermissions();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
+}
+
+void requestPermissions() async {
+  Map<Permission, PermissionStatus> statuses = await [
+    Permission.camera,
+    Permission.location,
+    Permission.microphone,
+  ].request();
+
+  print(statuses);
 }
 
 class MyApp extends StatelessWidget {
@@ -37,7 +50,6 @@ class MyApp extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           ),
-          
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(

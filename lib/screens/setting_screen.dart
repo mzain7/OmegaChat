@@ -129,6 +129,7 @@ class SettingScreen extends StatelessWidget {
                 leftIcon:
                     const Icon(Icons.text_fields_rounded, color: Colors.white),
                 header: const Text('Account Settings', style: headerStyle),
+                contentBackgroundColor: Colors.grey,
                 content: Column(
                   children: [
                     ListTile(
@@ -137,22 +138,75 @@ class SettingScreen extends StatelessWidget {
                           createRoute(false),
                         );
                       },
-                      leading: const Icon(Icons.person, color: Colors.white),
+                      leading: const Icon(Icons.person, color: Colors.black),
                       title: const Text(
                         'Personal Details',
                       ),
-                    )
+                    ),
+                    ListTile(
+                      onTap: () {
+                        user?.updatePassword('zxcvbnm');
+                      },
+                      leading: const Icon(Icons.person, color: Colors.black),
+                      title: const Text(
+                        'Upadte Password',
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        user?.verifyBeforeUpdateEmail('mzain49190@gmail.com');
+                      },
+                      leading: const Icon(Icons.person, color: Colors.black),
+                      title: const Text(
+                        'Upadte Email',
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        user?.sendEmailVerification();
+                      },
+                      leading: const Icon(Icons.person, color: Colors.black),
+                      title: const Text(
+                        'Verify Email',
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        FirebaseAuth.instance.verifyPhoneNumber(
+                          verificationCompleted: (phoneAuthCredential) {
+                            print(phoneAuthCredential);
+                          },
+                          verificationFailed: (error) {},
+                          codeSent: (verificationId, forceResendingToken) {},
+                          codeAutoRetrievalTimeout: (verificationId) {},
+                          phoneNumber: '+923174317202',
+                        );
+                      },
+                      leading: const Icon(Icons.person, color: Colors.black),
+                      title: const Text(
+                        'Add Phone Number',
+                      ),
+                    ),
                   ],
                 ),
               ),
+              AccordionSection(
+                isOpen: false,
+                contentVerticalPadding: 20,
+                leftIcon:
+                    const Icon(Icons.text_fields_rounded, color: Colors.white),
+                header: const Text('App Settings', style: headerStyle),
+                contentBackgroundColor: Colors.grey,
+                content: const Text('nciec'),
+              ),
             ]),
-            ElevatedButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                GoogleSignIn().signOut();
-              },
-              child: const Text('Sign Out'),
-            ),
+        ElevatedButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            GoogleSignIn().signOut();
+          },
+          child: const Text('Sign Out'),
+        ),
       ],
     );
   }

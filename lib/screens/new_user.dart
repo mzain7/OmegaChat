@@ -131,76 +131,101 @@ class _NewUserState extends State<NewUser> {
     _countryController.text = userDetails?['country'] ?? '';
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 0,
-      ),
+          // toolbarHeight: 0,
+          ),
+      backgroundColor: Theme.of(context).colorScheme.onBackground,
       body: Container(
         padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Form(
-                    key: _form,
-                    child: TextFormField(
-                      initialValue: name,
-                      decoration: textFieldStyle.copyWith(
-                        labelText: 'Name',
-                      ),
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.none,
-                      validator: (value) {
-                        if (value == null || value.toString().trim().isEmpty) {
-                          return 'Please enter your name';
-                        }
-                        if (value.length < 4) {
-                          return 'Please enter your full name';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        name = value!;
-                      },
-                    ),
-                  ),
+            ImageInput(setImage: setImage, imageUrl: photoUrl),
+            const SizedBox(height: 10),
+            Form(
+              key: _form,
+              child: TextFormField(
+                style: const TextStyle(color: Colors.white),
+                initialValue: name,
+                decoration: textFieldStyle.copyWith(
+                  labelText: 'Name',
                 ),
-                ImageInput(setImage: setImage, imageUrl: photoUrl),
-              ],
+                autocorrect: false,
+                textCapitalization: TextCapitalization.none,
+                validator: (value) {
+                  if (value == null || value.toString().trim().isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  if (value.length < 4) {
+                    return 'Please enter your full name';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  name = value!;
+                },
+              ),
             ),
-            Row(
-              children: [
-                ElevatedButton.icon(
-                  onPressed: _presentDatePicker,
-                  icon: const Icon(
-                    Icons.calendar_month,
-                  ),
-                  label: Text(_selectedDate == null
-                          ? 'Date of Birth: --/--/----'
-                          : 'Date of Birth: ${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
-                      // : formatter.format(_selectedDate!),
-                      ),
-                ),
-                Expanded(
-                  child: CustomDropdown(
-                    hintText: 'Select a Gender',
-                    items: const [
-                      'Male',
-                      'Female',
-                      'Shhh! Asi batay bati nahi jati'
-                    ],
-                    controller: _genderController,
-                  ),
-                ),
-              ],
+            const SizedBox(height: 10),
+            OutlinedButton.icon(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.grey),
+              ),
+              onPressed: _presentDatePicker,
+              icon: const Icon(
+                Icons.calendar_month,
+              ),
+              label: Text(_selectedDate == null
+                  ? 'Date of Birth:\n--/--/----'
+                  : 'Date of Birth:\n${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'),
+              //  Text(_selectedDate == null
+              //         ? 'Date of Birth: --/--/----'
+              //         : 'Date of Birth: ${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
+              // : formatter.format(_selectedDate!),
             ),
+            const SizedBox(height: 10),
+            CustomDropdown(
+              fillColor: Colors.transparent,
+              borderSide: const BorderSide(color: Colors.grey),
+              fieldSuffixIcon:
+                  const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+              hintStyle: const TextStyle(color: Colors.grey),
+              selectedStyle: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+              hintText: 'Select a Gender',
+              items: const ['Male', 'Female', 'Asi batay ba\nti nahi jati'],
+              controller: _genderController,
+            ),
+            const SizedBox(height: 10),
             CustomDropdown.search(
+              fillColor: Colors.transparent,
+              borderSide: const BorderSide(color: Colors.grey),
+              fieldSuffixIcon:
+                  const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+              hintStyle: const TextStyle(color: Colors.grey),
+              selectedStyle: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
               hintText: 'Select your Country',
               items: countries ?? ['Loading...'],
               controller: _countryController,
             ),
-            ElevatedButton(onPressed: _submit, child: const Text('Next')),
+            const SizedBox(height: 25),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 35.0, vertical: 8.0),
+              ),
+              onPressed: _submit,
+              child: const Text('Next', style: TextStyle(fontSize: 20,)),
+            ),
           ],
         ),
       ),

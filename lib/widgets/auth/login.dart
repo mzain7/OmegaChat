@@ -78,6 +78,8 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
+                  
+                  style: const TextStyle(color: Colors.white),
                   controller: _emailController,
                   autovalidateMode: _autovalidateMode,
                   decoration: textFieldStyle.copyWith(
@@ -99,6 +101,7 @@ class _LoginState extends State<Login> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _passwordController,
                   autovalidateMode: _autovalidateMode,
                   decoration: textFieldStyle.copyWith(

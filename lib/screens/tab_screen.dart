@@ -39,10 +39,19 @@ class _TabScreenState extends State<TabScreen> {
       body: PageView(
         controller: _pageController,
         children: [
-          const HomeScreen(),
-          const NewUser(newUser: true,),
-           SettingScreen(),
-          const AccordionPage(),
+          const Scaffold(
+            backgroundColor: Colors.blue,
+            
+          ),
+          const Scaffold(
+            backgroundColor: Colors.yellow,
+            
+          ),
+          const Scaffold(
+            backgroundColor: Colors.red,
+            
+          ),
+          SettingScreen(),
         ],
         onPageChanged: (index) {
           setState(() {

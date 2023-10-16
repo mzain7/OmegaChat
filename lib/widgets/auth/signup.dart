@@ -90,6 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
+                  style: const TextStyle(color: Colors.white),
                   autovalidateMode: _autovalidateMode,
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -107,6 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  style: const TextStyle(color: Colors.white),
                   autovalidateMode: _autovalidateMode,
                   controller: _passwordController,
                   obscureText: true,
@@ -122,6 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  style: const TextStyle(color: Colors.white),
                   autovalidateMode: _autovalidateMode,
                   controller: _confirmPasswordController,
                   obscureText: true,
